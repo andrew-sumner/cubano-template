@@ -19,10 +19,10 @@ import org.concordion.integration.junit4.ConcordionRunner;
 import org.concordion.logback.LogbackAdaptor;
 import org.junit.runner.RunWith;
 
-import nz.govt.msd.driver.BrowserBasedTest;
-import nz.govt.msd.driver.concordion.EnvironmentExtension;
-import nz.govt.msd.driver.http.HttpEasy;
-import nz.govt.msd.driver.web.Browser;
+import org.concordion.cubano.driver.BrowserBasedTest;
+import org.concordion.cubano.driver.concordion.EnvironmentExtension;
+import org.concordion.cubano.driver.http.HttpEasy;
+import org.concordion.cubano.driver.web.Browser;
 
 /**
  * Sets up any Concordion extensions or other items that must be shared between index and test fixtures.

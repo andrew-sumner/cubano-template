@@ -23,7 +23,7 @@ import org.concordion.slf4j.ext.ReportLogger;
 import org.concordion.slf4j.ext.ReportLoggerFactory;
 import org.w3c.dom.Document;
 
-import nz.govt.msd.driver.http.XmlReader;
+import org.concordion.cubano.driver.http.XmlReader;
 
 public class ServiceBase {
 	private final ReportLogger logger = ReportLoggerFactory.getReportLogger(this.getClass());

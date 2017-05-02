@@ -2,7 +2,7 @@ package org.concordion.cubano.driver.services;
 
 import java.io.IOException;
 
-import nz.govt.msd.driver.http.HttpEasy;
+import org.concordion.cubano.driver.http.HttpEasy;
 
 public class ExampleRestApi extends ServiceBase {
 

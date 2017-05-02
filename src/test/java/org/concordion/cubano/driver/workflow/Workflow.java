@@ -3,7 +3,7 @@ package org.concordion.cubano.driver.workflow;
 import org.concordion.cubano.driver.services.ExampleRestApi;
 import org.concordion.cubano.driver.ui.google.GoogleSearchPage;
 
-import nz.govt.msd.driver.BrowserBasedTest;
+import org.concordion.cubano.driver.BrowserBasedTest;
 
 public class Workflow {
 	private final BrowserBasedTest test;

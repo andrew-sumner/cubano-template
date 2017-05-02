@@ -2,11 +2,11 @@ package org.concordion.cubano.driver.ui;
 
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
-import nz.govt.msd.driver.BrowserBasedTest;
-import nz.govt.msd.driver.web.BasePageObject;
-import nz.govt.msd.driver.web.PageReadyConditions;
-import nz.govt.msd.utils.ActionTimer;
-import nz.govt.msd.utils.Config;
+import org.concordion.cubano.driver.BrowserBasedTest;
+import org.concordion.cubano.driver.web.BasePageObject;
+import org.concordion.cubano.driver.web.PageReadyConditions;
+import org.concordion.cubano.utils.ActionTimer;
+import org.concordion.cubano.utils.Config;
 
 /**
  * Object that all pages inherit from, this is customised to each application.

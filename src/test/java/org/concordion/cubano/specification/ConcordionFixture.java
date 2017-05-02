@@ -24,8 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Level;
-import nz.govt.msd.driver.concordion.ExceptionHtmlCaptureExtension;
-import nz.govt.msd.utils.data.DataCleanupHelper;
+import org.concordion.cubano.driver.concordion.ExceptionHtmlCaptureExtension;
+import org.concordion.cubano.utils.data.DataCleanupHelper;
 
 /**
  * Customises the test specification and provides some helper methods

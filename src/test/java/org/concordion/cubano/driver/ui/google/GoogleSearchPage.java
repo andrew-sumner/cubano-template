@@ -10,7 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import nz.govt.msd.driver.BrowserBasedTest;
+import org.concordion.cubano.driver.BrowserBasedTest;
 
 public class GoogleSearchPage extends PageObject<GoogleSearchPage> {
 	public GoogleSearchPage(BrowserBasedTest test) {
