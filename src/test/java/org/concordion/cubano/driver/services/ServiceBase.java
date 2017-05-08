@@ -26,88 +26,88 @@ import org.w3c.dom.Document;
 import org.concordion.cubano.driver.http.XmlReader;
 
 public class ServiceBase {
-	private final ReportLogger logger = ReportLoggerFactory.getReportLogger(this.getClass());
-	
-	protected ReportLogger getLogger() {
-		return logger;
-	}
-	
-	/**
-	 * Log service request details.
-	 */
-	protected void captureAction(Action action, String title, String description, String data) {
-		captureAction(action, title, description, data, true);
-	}
+    private final ReportLogger logger = ReportLoggerFactory.getReportLogger(this.getClass());
 
-	protected void captureAction(Action action, String title, String description, String data, boolean success) {
-		logger.with()
-				.message(description)
-				.attachment(data, "data" + action.fileExtension, action.mediaType)
-				.marker(StoryboardMarkerFactory.addCard(title, action.cardImage, success ? CardResult.SUCCESS : CardResult.FAILURE))
-				.debug();
-	}
+    protected ReportLogger getLogger() {
+        return logger;
+    }
 
-	/**
-	 * Tentatively log service request details: allows log details be be overridden before it is finally pushed to the logs.
-	 * 
-	 * <p>
-	 * This log statement will get pushed to the log the next time a log request is made or when specifically requested.
-	 * </p>
-	 */
-	protected void captureBufferedAction(Action action, String title, String description, String data) {
-		logger.withBuffered()
-				.message(description)
-				.attachment(data, "data" + action.fileExtension, action.mediaType)
-				.marker(StoryboardMarkerFactory.addCard(title, action.cardImage))
-				.debug();
-	}
-	
-	protected void clearBufferedAction() {
-		logger.clearBufferedMessage();
-	}
+    /**
+     * Log service request details.
+     */
+    protected void captureAction(Action action, String title, String description, String data) {
+        captureAction(action, title, description, data, true);
+    }
 
-	protected void writeBufferedAction() {
-		logger.writeBufferedMessage();
-	}
+    protected void captureAction(Action action, String title, String description, String data, boolean success) {
+        logger.with()
+                .message(description)
+                .attachment(data, "data" + action.fileExtension, action.mediaType)
+                .marker(StoryboardMarkerFactory.addCard(title, action.cardImage, success ? CardResult.SUCCESS : CardResult.FAILURE))
+                .debug();
+    }
 
-	public enum Action {
-		XML_REQUEST(StockCardImage.XML_REQUEST, MediaType.XML, ".xml"), 
-		XML_RESPONSE(StockCardImage.XML, MediaType.XML, ".xml"), 
-		JSON_RESPONSE(StockCardImage.JSON, MediaType.JSON, ".json"),
-		HTML(StockCardImage.HTML, MediaType.HTML, ".html");
-		
-		private CardImage cardImage;
-		private MediaType mediaType;
-		private String fileExtension;
+    /**
+     * Tentatively log service request details: allows log details be be overridden before it is finally pushed to the logs.
+     * <p>
+     * <p>
+     * This log statement will get pushed to the log the next time a log request is made or when specifically requested.
+     * </p>
+     */
+    protected void captureBufferedAction(Action action, String title, String description, String data) {
+        logger.withBuffered()
+                .message(description)
+                .attachment(data, "data" + action.fileExtension, action.mediaType)
+                .marker(StoryboardMarkerFactory.addCard(title, action.cardImage))
+                .debug();
+    }
 
-		private Action(CardImage cardImage, MediaType mediaType, String fileExtension) {
-			this.cardImage = cardImage;
-			this.mediaType = mediaType;
-			this.fileExtension = fileExtension;			
-		}
-	}
+    protected void clearBufferedAction() {
+        logger.clearBufferedMessage();
+    }
 
-	protected String xmlFromClass(Object jaxbElement) throws JAXBException, PropertyException, ParserConfigurationException, SOAPException, IOException {
-		Class<?> jaxbClass = jaxbElement.getClass();
+    protected void writeBufferedAction() {
+        logger.writeBufferedMessage();
+    }
 
-		Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+    public enum Action {
+        XML_REQUEST(StockCardImage.XML_REQUEST, MediaType.XML, ".xml"),
+        XML_RESPONSE(StockCardImage.XML, MediaType.XML, ".xml"),
+        JSON_RESPONSE(StockCardImage.JSON, MediaType.JSON, ".json"),
+        HTML(StockCardImage.HTML, MediaType.HTML, ".html");
 
-		Marshaller marshaller = JAXBContext.newInstance(jaxbClass).createMarshaller();
-		marshaller.marshal(jaxbElement, document);
-		SOAPMessage soapMessage = MessageFactory.newInstance().createMessage();
+        private CardImage cardImage;
+        private MediaType mediaType;
+        private String fileExtension;
 
-		soapMessage.getSOAPBody().addDocument(document);
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		soapMessage.writeTo(outputStream);
-		
-		String output = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
+        private Action(CardImage cardImage, MediaType mediaType, String fileExtension) {
+            this.cardImage = cardImage;
+            this.mediaType = mediaType;
+            this.fileExtension = fileExtension;
+        }
+    }
 
-		return XmlReader.prettyFormat(output, 2);
-	}
+    protected String xmlFromClass(Object jaxbElement) throws JAXBException, PropertyException, ParserConfigurationException, SOAPException, IOException {
+        Class<?> jaxbClass = jaxbElement.getClass();
 
-	protected <R> R xmlToClass(XmlReader reader, Class<R> clazz) throws JAXBException {
-		R reponse = reader.from(clazz);
+        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 
-		return reponse;
-	}
+        Marshaller marshaller = JAXBContext.newInstance(jaxbClass).createMarshaller();
+        marshaller.marshal(jaxbElement, document);
+        SOAPMessage soapMessage = MessageFactory.newInstance().createMessage();
+
+        soapMessage.getSOAPBody().addDocument(document);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        soapMessage.writeTo(outputStream);
+
+        String output = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
+
+        return XmlReader.prettyFormat(output, 2);
+    }
+
+    protected <R> R xmlToClass(XmlReader reader, Class<R> clazz) throws JAXBException {
+        R reponse = reader.from(clazz);
+
+        return reponse;
+    }
 }

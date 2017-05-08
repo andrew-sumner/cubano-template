@@ -61,11 +61,15 @@ dependencies {
 }
 
 checkstyle {
-	toolVersion = '6.19'
+	//toolVersion = '6.19'
 	ignoreFailures = true
-	configFile = new File("checkstyle-cyf-msd-5.xml")
+
+	println ("**** CHECKSTYLE TOOL VERSION ${toolVersion} ")
+	// Using default location /config/checkstyle/checkstyle.xml
+	//configFile = new File("checkstyle-cyf-msd-5.xml")
+
 	// Exclude generated source set
-	sourceSets = [sourceSets.main, sourceSets.test]
+	// sourceSets = [sourceSets.main, sourceSets.test]
 }
 
 findbugs {
@@ -92,7 +96,7 @@ task wrapper(type: Wrapper) {
 // }
 
 test {
-	//include '**/Specification.*'
+	exclude '**/demo/*.*'
     
     // Pass through all supplied system properties - excluding those containing '.' as some of these system properties introduce JNA incompatibility issues
     System.properties.each { k, v->
