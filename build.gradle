@@ -24,7 +24,13 @@ eclipse {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+// Always refreshes snapshots
+configurations.all {
+	resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
 repositories {
+	maven { url "https://jitpack.io" }
 	mavenLocal()
 	maven {
 		url = 'http://oss.jfrog.org/oss-snapshot-local'
@@ -58,8 +64,14 @@ configurations.all {
 */
 
 dependencies {
-    testCompile 'org.concordion:cubano:0.1.0-SNAPSHOT'
-    
+//    testCompile 'org.concordion:cubano:0.1.0-SNAPSHOT'
+
+	// This uses Jitpack to build and import multiple modules from Github
+    testCompile 'com.github.concordion:cubano:config-non-static-SNAPSHOT'
+
+	testCompile 'org.codejargon:fluentjdbc:1.6'
+
+	// TODO - we can't redistribute this
     testCompile files('libs/ojdbc7.jar')
     
     testCompile 'commons-beanutils:commons-beanutils:1.9.2'
