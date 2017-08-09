@@ -12,3 +12,5 @@ bin/
 # IDEA
 .idea/
 *.iml
+classes/
+
