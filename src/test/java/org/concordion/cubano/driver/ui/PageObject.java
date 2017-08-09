@@ -1,12 +1,11 @@
 package org.concordion.cubano.driver.ui;
 
-import org.openqa.selenium.support.ui.ExpectedCondition;
-
 import org.concordion.cubano.driver.BrowserBasedTest;
 import org.concordion.cubano.driver.web.BasePageObject;
 import org.concordion.cubano.driver.web.PageReadyConditions;
+import org.concordion.cubano.driver.web.config.WebDriverConfig;
 import org.concordion.cubano.utils.ActionTimer;
-import org.concordion.cubano.utils.Config;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 
 /**
  * Object that all pages inherit from, this is customised to each application.
@@ -16,15 +15,15 @@ import org.concordion.cubano.utils.Config;
  * @author sumnera
  */
 public abstract class PageObject<T extends PageObject<T>> extends BasePageObject<T> {
-	public PageObject(BrowserBasedTest test) {
-		this(test, Config.getDefaultTimeout());
-	}
+    public PageObject(BrowserBasedTest test) {
+        this(test, WebDriverConfig.getInstance().getDefaultTimeout());
+    }
 
-	public PageObject(BrowserBasedTest test, int timeoutWaitInSeconds, Object... params) {
-		super(test, timeoutWaitInSeconds, params);
-	}
+    public PageObject(BrowserBasedTest test, int timeoutWaitInSeconds, Object... params) {
+        super(test, timeoutWaitInSeconds, params);
+    }
 
-	/**
+    /**
      * Returns a condition that checks whether the page is loaded. This is called when constructing a new PageObject to check that it is in sync with
      * the browser.
      * <p/>
@@ -33,38 +32,38 @@ public abstract class PageObject<T extends PageObject<T>> extends BasePageObject
      * @param params List of parameters that where passed in to the constructor
      * @return An ExpectedCondition
      */
-	public abstract ExpectedCondition<?> pageIsLoaded(Object... params);
+    public abstract ExpectedCondition<?> pageIsLoaded(Object... params);
 
-	@Override
-	protected void waitUntilPageIsLoaded(int timeoutWaitInSeconds, Object... params) {
-		getLogger().debug("Wait for any ajax requests to complete");
-		
-		switchToMainDocument();
-		waitUntilAjaxRequestsCompleted();
+    @Override
+    protected void waitUntilPageIsLoaded(int timeoutWaitInSeconds, Object... params) {
+        getLogger().debug("Wait for any ajax requests to complete");
 
-		ActionTimer timer = ActionTimer.start(getLogger(), "Checking {} loads within {} seconds",  getSimpleName(), timeoutWaitInSeconds);
+        switchToMainDocument();
+        waitUntilAjaxRequestsCompleted();
 
-		// Wait for the page to complete loading
-		if (pageIsLoaded(params) != null) {
-			waitUntil(pageIsLoaded(params), timeoutWaitInSeconds);
-		}
+        ActionTimer timer = ActionTimer.start(getLogger(), "Checking {} loads within {} seconds",  getSimpleName(), timeoutWaitInSeconds);
 
-		getLogger().with()
-				.htmlMessage("{} loaded in {} seconds <br /><span class=\"greyed\">Current url: {}<span>",
-						getSimpleName(), timer.duration().getSeconds(), getBrowser().getDriver().getCurrentUrl())
-				.trace();
-	}
+        // Wait for the page to complete loading
+        if (pageIsLoaded(params) != null) {
+            waitUntil(pageIsLoaded(params), timeoutWaitInSeconds);
+        }
 
-	/**
-	 * As MyMSD is a single page application WebDriver does not wait for a "new page" to load 
-	 * when click on button/link, instead the Ajax request is fired off and WebDriver passes control
-	 * back to the test. The will ensure that any Ajax requests have completed before moving on.
-	 * 
-	 * NOTE: this assumes that we are using jQuery.
-	 */
-	protected void waitUntilAjaxRequestsCompleted() {	
-		waitUntil(PageReadyConditions.noActiveAjaxRequest(), 90);
-		waitUntil(PageReadyConditions.noVisibleSpinners(), 30);
-	}
-	
+        getLogger().with()
+                .htmlMessage("{} loaded in {} seconds <br /><span class=\"greyed\">Current url: {}<span>",
+                        getSimpleName(), timer.duration().getSeconds(), getBrowser().getDriver().getCurrentUrl())
+                .trace();
+    }
+
+    /**
+     * As MyMSD is a single page application WebDriver does not wait for a "new page" to load 
+     * when click on button/link, instead the Ajax request is fired off and WebDriver passes control
+     * back to the test. The will ensure that any Ajax requests have completed before moving on.
+     * 
+     * NOTE: this assumes that we are using jQuery.
+     */
+    protected void waitUntilAjaxRequestsCompleted() {    
+        waitUntil(PageReadyConditions.noActiveAjaxRequest(), 90);
+        waitUntil(PageReadyConditions.noVisibleSpinners(), 30);
+    }
+    
 }

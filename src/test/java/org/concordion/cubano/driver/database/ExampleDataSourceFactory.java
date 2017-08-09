@@ -14,37 +14,37 @@ import org.slf4j.LoggerFactory;
 import oracle.jdbc.pool.OracleDataSource;
 
 public class ExampleDataSourceFactory {
-	private static DataSource datasource = null;
-	private static FluentJdbc fluentJDBC = null;
-	private static final Logger LOGGER = LoggerFactory.getLogger(ExampleDataSourceFactory.class);
-	
-	private ExampleDataSourceFactory() {
-	}
+    private static DataSource datasource = null;
+    private static FluentJdbc fluentJDBC = null;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExampleDataSourceFactory.class);
 
-	public static synchronized DataSource getOracleDataSource() throws SQLException {
-		if (datasource == null) {
-			OracleDataSource oracleDS = new OracleDataSource();
-			oracleDS.setURL(AppConfig.getDatabaseUrl());
+    private ExampleDataSourceFactory() {
+    }
 
-			datasource = oracleDS;
-		}
+    public static synchronized DataSource getOracleDataSource() throws SQLException {
+        if (datasource == null) {
+            OracleDataSource oracleDS = new OracleDataSource();
+            oracleDS.setURL(AppConfig.getInstance().getDatabaseUrl());
 
-		return datasource;
-	}
+            datasource = oracleDS;
+        }
 
-	public static synchronized FluentJdbc fluentJDBC() throws SQLException {
-		if (fluentJDBC == null) {
-			AfterQueryListener listener = execution -> {
-				// TODO Also log parameters
-				LOGGER.trace("Executed SQL: " + execution.sql());
-			};
+        return datasource;
+    }
 
-			fluentJDBC = new FluentJdbcBuilder()
-					.connectionProvider(getOracleDataSource())
-					.afterQueryListener(listener)
-					.build();
-		}
+    public static synchronized FluentJdbc fluentJDBC() throws SQLException {
+        if (fluentJDBC == null) {
+            AfterQueryListener listener = execution -> {
+                // TODO Also log parameters
+                LOGGER.trace("Executed SQL: " + execution.sql());
+            };
 
-		return fluentJDBC;
-	}
+            fluentJDBC = new FluentJdbcBuilder()
+                    .connectionProvider(getOracleDataSource())
+                    .afterQueryListener(listener)
+                    .build();
+        }
+
+        return fluentJDBC;
+    }
 }
