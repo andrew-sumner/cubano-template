@@ -35,82 +35,82 @@ import org.concordion.cubano.driver.web.Browser;
 @Extensions({ TimestampFormatterExtension.class }) // TODO ADD BACK:, RunTotalsExtension.class })
 @ConcordionOptions(markdownExtensions = { MarkdownExtensions.HARDWRAPS, MarkdownExtensions.AUTOLINKS })
 public abstract class ConcordionBase implements BrowserBasedTest {
-	private static List<Browser> browsers = new ArrayList<Browser>();
-	private static ThreadLocal<Browser> browser = new ThreadLocal<Browser>();
+    private static List<Browser> browsers = new ArrayList<Browser>();
+    private static ThreadLocal<Browser> browser = new ThreadLocal<Browser>();
 
-	@Extension 
-	private final StoryboardExtension storyboard = new StoryboardExtension();
-	
-	@Extension
-	private final EnvironmentExtension footer = new EnvironmentExtension()
-			.withRerunTest("01 - ProcessAndRules-RunSelectedTest")
-			.withRerunParameter("token", "ALLOW")
-			.withRerunParameter("environment", AppConfig.getEnvironment())
-			.withRerunParameter("TEST_CLASSNAME", this.getClass().getName().replace(ConcordionBase.class.getPackage().getName() + ".", ""))
-			.withRerunParameter("SVN_TAG", EnvironmentExtension.getSubversionUrl())
-			.withEnvironment(AppConfig.getEnvironment().toUpperCase())
-			.withURL(AppConfig.getBaseUrl());
+    @Extension 
+    private final StoryboardExtension storyboard = new StoryboardExtension();
+
+    @Extension
+    private final EnvironmentExtension footer = new EnvironmentExtension()
+            .withRerunTest("01 - ProcessAndRules-RunSelectedTest")
+            .withRerunParameter("token", "ALLOW")
+            .withRerunParameter("environment", AppConfig.getInstance().getEnvironment())
+            .withRerunParameter("TEST_CLASSNAME", this.getClass().getName().replace(ConcordionBase.class.getPackage().getName() + ".", ""))
+            .withRerunParameter("SVN_TAG", EnvironmentExtension.getSubversionUrl())
+            .withEnvironment(AppConfig.getInstance().getEnvironment().toUpperCase())
+            .withURL(AppConfig.getInstance().getBaseUrl());
 
 // Attempt 1: 
-//	@ConcordionScoped(Scope.SPECIFICATION)
-//	private ScopedObjectHolder<BrowserListener> browserListenerHolder = new ScopedObjectHolder<BrowserListener>() {
-//		@Override
-//		protected BrowserListener create() {
-//			return new StorycardCreatingBrowserListener(getStoryboard());
-//		}
-//	};
-	
-	
-	static {
-		LogbackAdaptor.logInternalStatus();
-		AppConfig.logSettings();
+//    @ConcordionScoped(Scope.SPECIFICATION)
+//    private ScopedObjectHolder<BrowserListener> browserListenerHolder = new ScopedObjectHolder<BrowserListener>() {
+//        @Override
+//        protected BrowserListener create() {
+//            return new StorycardCreatingBrowserListener(getStoryboard());
+//        }
+//    };
 
-		// Set the proxy rules for all rest requests made during the test run
-		HttpEasy.withDefaults()
-			.allowAllHosts()
-			.trustAllCertificates()
-			.baseUrl(AppConfig.getBaseUrl());
+    static {
+        LogbackAdaptor.logInternalStatus();
+        AppConfig config = AppConfig.getInstance();
+        config.logSettings();
 
-		if (AppConfig.isProxyRequired()) {
-			HttpEasy.withDefaults()
-					.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(AppConfig.getProxyHost(), AppConfig.getProxyPort())))
-					.bypassProxyForLocalAddresses(true);
+        // Set the proxy rules for all rest requests made during the test run
+        HttpEasy.withDefaults()
+            .allowAllHosts()
+            .trustAllCertificates()
+            .baseUrl(config.getBaseUrl());
 
-			if (!AppConfig.getProxyUser().isEmpty() && !AppConfig.getProxyPassword().isEmpty()) {
-				HttpEasy.withDefaults().proxyAuth(AppConfig.getProxyUser(), AppConfig.getProxyPassword());
-			}
-		}
-	}
-	
-	@AfterExample
-	private final void afterExample() {
-		if (browser.get() != null) {
-			browser.get().removeScreenshotTaker();
-		}
-	}
+        if (config.isProxyRequired()) {
+            HttpEasy.withDefaults()
+                    .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(config.getProxyHost(), config.getProxyPort())))
+                    .bypassProxyForLocalAddresses(true);
 
-	@AfterSuite
-	private final void afterSuite() {
-		for (Browser openbrowser : browsers) {
-			openbrowser.close();
-		}
-	}
-	
-	@Override
-	public Browser getBrowser() {
-		if (browser.get() == null) {
-			Browser newBrowser = new Browser();
-			browser.set(newBrowser);
-			browsers.add(newBrowser);
-		}
+            if (!config.getProxyUser().isEmpty() && !config.getProxyPassword().isEmpty()) {
+                HttpEasy.withDefaults().proxyAuth(config.getProxyUser(), config.getProxyPassword());
+            }
+        }
+    }
 
-		return browser.get();
-	}
-	
-	/**
-	 * @return A reference to the Storyboard extension.
-	 */
-	public StoryboardExtension getStoryboard() {
-		return storyboard;
-	}
+    @AfterExample
+    private final void afterExample() {
+        if (browser.get() != null) {
+            browser.get().removeScreenshotTaker();
+        }
+    }
+
+    @AfterSuite
+    private final void afterSuite() {
+        for (Browser openbrowser : browsers) {
+            openbrowser.close();
+        }
+    }
+
+    @Override
+    public Browser getBrowser() {
+        if (browser.get() == null) {
+            Browser newBrowser = new Browser();
+            browser.set(newBrowser);
+            browsers.add(newBrowser);
+        }
+
+        return browser.get();
+    }
+
+    /**
+     * @return A reference to the Storyboard extension.
+     */
+    public StoryboardExtension getStoryboard() {
+        return storyboard;
+    }
 }

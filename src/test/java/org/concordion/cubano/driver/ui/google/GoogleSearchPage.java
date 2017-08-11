@@ -13,70 +13,70 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.concordion.cubano.driver.BrowserBasedTest;
 
 public class GoogleSearchPage extends PageObject<GoogleSearchPage> {
-	public GoogleSearchPage(BrowserBasedTest test) {
-		super(test);
-	}
+    public GoogleSearchPage(BrowserBasedTest test) {
+        super(test);
+    }
 
-	@FindBy(id = "gs_lc0")
-	WebElement searchBox;
+    @FindBy(id = "gs_lc0")
+    WebElement searchBox;
 
-	@FindBy(css = "#gs_lc0 input")
-	WebElement searchField;
+    @FindBy(css = "#gs_lc0 input")
+    WebElement searchField;
 
-	@FindBy(name = "btnK")
-	WebElement searchButton;
+    @FindBy(name = "btnK")
+    WebElement searchButton;
 
-	@FindBy(name = "btnG")
-	WebElement searchIconButton;
+    @FindBy(name = "btnG")
+    WebElement searchIconButton;
 
-	// @FindBy(name = "div.g")
-	// List<SearchResult> searchResults;
+    // @FindBy(name = "div.g")
+    // List<SearchResult> searchResults;
 
-	@Override
-	public ExpectedCondition<?> pageIsLoaded(Object... params) {
-		return ExpectedConditions.visibilityOf(searchBox);
-	}
+    @Override
+    public ExpectedCondition<?> pageIsLoaded(Object... params) {
+        return ExpectedConditions.visibilityOf(searchBox);
+    }
 
-	public static GoogleSearchPage open(BrowserBasedTest test) {
-		test.getBrowser().getDriver().navigate().to(AppConfig.getSearchUrl());
+    public static GoogleSearchPage open(BrowserBasedTest test) {
+        test.getBrowser().getDriver().navigate().to(AppConfig.getInstance().getSearchUrl());
 
-		return new GoogleSearchPage(test);
-	}
+        return new GoogleSearchPage(test);
+    }
 
-	public GoogleSearchPage searchFor(String term) {
-		searchField.sendKeys(term);
+    public GoogleSearchPage searchFor(String term) {
+        searchField.sendKeys(term);
 
-		WebElement button;
+        WebElement button;
 
-		if (searchButton.isDisplayed()) {
-			button = searchButton;
-		} else {
-			button = searchIconButton;
-		}
+        if (searchButton.isDisplayed()) {
+            button = searchButton;
+        } else {
+            button = searchIconButton;
+        }
 
-		capturePage(button);
-		button.click();
+        capturePage(button);
+        button.click();
 
-		waitUntil(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("div.g"), 2), 3);
+        waitUntil(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("div.g"), 2), 3);
 
-		return this;
-	}
+        return this;
+    }
 
-	public String getSearchResult(String link) {
-		List<SearchResult> searchResults = getBrowser().getHtmlElementsLoader(this).findElements(SearchResult.class, By.cssSelector("div.g"));
+    public String getSearchResult(String link) {
+        List<SearchResult> searchResults = getBrowser().getHtmlElementsLoader(this).findElements(SearchResult.class, By.cssSelector("div.g"));
 
-		for (SearchResult searchResult : searchResults) {
-			String url = searchResult.url.getText();
+        for (SearchResult searchResult : searchResults) {
+            String url = searchResult.url.getText();
 
-			if (url.startsWith(link)) {
-				if (url.endsWith("/")) {
-					url = url.substring(0, url.length() - 1);
-				}
+            if (url.startsWith(link)) {
+                if (url.endsWith("/")) {
+                    url = url.substring(0, url.length() - 1);
+                }
 
-				return url;
-			}
-		}
+                return url;
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 }
