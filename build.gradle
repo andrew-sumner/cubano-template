@@ -59,7 +59,7 @@ dependencies {
 //    testCompile 'org.concordion:cubano:0.1.0-SNAPSHOT'
 
 	// This uses Jitpack to build and import multiple modules from Github
-    testCompile 'com.github.concordion:cubano:config-non-static-SNAPSHOT'
+    testCompile 'com.github.concordion:cubano:master-SNAPSHOT'
 
 	testCompile 'org.codejargon:fluentjdbc:1.6'
 
@@ -92,7 +92,7 @@ findbugs {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.5'
+    gradleVersion = '4.2.1'
 
     // To download through proxy, need to update <project root>\gradle\wrapper\gradle-wrapper.properties and change 
     //		distributionUrl property from https... to http...

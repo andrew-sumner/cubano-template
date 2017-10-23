@@ -1,11 +1,14 @@
 package org.concordion.cubano;
 
+import org.concordion.cubano.config.*;
+
 import org.concordion.cubano.driver.web.config.WebDriverConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AppConfig extends WebDriverConfig {
+public class AppConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfig.class);
+    private final PropertyLoader propertyLoader;
 
     private String baseUrl;
     private String searchUrl;
@@ -21,7 +24,7 @@ public class AppConfig extends WebDriverConfig {
     }
 
     private AppConfig() {
-        super();
+        propertyLoader = Config.getInstance().getPropertyLoader();
         loadProperties();
 
         // TODO - reinstate?
@@ -29,18 +32,19 @@ public class AppConfig extends WebDriverConfig {
     }
 
     public void logSettings() {
-        LOGGER.info("Environment:        " + getEnvironment());
+        LOGGER.info("Environment:        " + Config.getInstance().getEnvironment());
         LOGGER.info("url:                " + baseUrl);
-        LOGGER.info("Browser:            " + getBrowser());
+        WebDriverConfig webDriverConfig = WebDriverConfig.getInstance();
+        LOGGER.info("Browser:            " + webDriverConfig.getBrowserProvider());
 
-        if (!getBrowserSize().isEmpty()) {
-            LOGGER.info("browserSize:        " + getBrowserSize());
+        if (!webDriverConfig.getBrowserDimension().isEmpty()) {
+            LOGGER.info("browserSize:        " + webDriverConfig.getBrowserDimension());
         }
     }
 
     private void loadProperties() {
-        baseUrl = getProperty("baseUrl");
-        searchUrl = getProperty("searchUrl");
+        baseUrl = propertyLoader.getProperty("baseUrl");
+        searchUrl = propertyLoader.getProperty("searchUrl");
 
         // dbUrl = getProperty("database.url");
         // dbSchema = getProperty("database.schema");
