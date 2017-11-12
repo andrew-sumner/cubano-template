@@ -14,6 +14,7 @@ public class AppConfig {
     private String searchUrl;
     private String dbSchema;
     private String dbUrl;
+    private int defaultTimeout;
 
     private static class Holder {
         static final AppConfig INSTANCE = new AppConfig();
@@ -26,9 +27,6 @@ public class AppConfig {
     private AppConfig() {
         propertyLoader = Config.getInstance().getPropertyLoader();
         loadProperties();
-
-        // TODO - reinstate?
-//        releaseProperties();
     }
 
     public void logSettings() {
@@ -45,7 +43,7 @@ public class AppConfig {
     private void loadProperties() {
         baseUrl = propertyLoader.getProperty("baseUrl");
         searchUrl = propertyLoader.getProperty("searchUrl");
-
+        defaultTimeout = propertyLoader.getPropertyAsInteger("webdriver.default.timeout", "5");
         // dbUrl = getProperty("database.url");
         // dbSchema = getProperty("database.schema");
 
@@ -67,5 +65,9 @@ public class AppConfig {
     public String getDatabaseSchema() {
         return dbSchema;
     }
+
+	public int getDefaultTimeout() {
+		return defaultTimeout;
+	}
 }
 

@@ -5,8 +5,8 @@
 		This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-		Checkstyle-Configuration: msd checkstyle
-		Description: This is the default MSD checkstyle configuration... with some tweaks.  Search for CUSTOM to see differences.
+		Checkstyle-Configuration: checkstyle
+		Description: This is the default checkstyle configuration... with some tweaks.  Search for CUSTOM to see differences.
 		
 		Checkstyle Suppression
 		// CHECKSTYLE:OFF - reason
@@ -14,12 +14,11 @@
 		 
 -->
 <module name="Checker">
-	<module name="SuppressWarningsFilter" />
-	<!--
-	<module name="SuppressionFilter">
-		<property name="file" value="${projectDir}/config/checkstyle/checkstyle-suppressions.xml"/>
+    <!--<module name="SuppressWarningsFilter" />-->
+    <module name="SuppressionFilter">
+   		<property name="file" value="${config_loc}/suppressions.xml"/>
 	</module>
--->
+
 	<property name="severity" value="info"/>
 
 	<module name="TreeWalker">
@@ -157,11 +156,7 @@
 		<module name="TrailingComment">
 			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
 		</module>
-	</module>
-	
-	<module name="FileTabCharacter">
-		<property name="severity" value="warning"/>
-	    <property name="eachLine" value="true"/>
+        <module name="Indentation"/>
 	</module>
 	
 	<module name="FileLength"/>

@@ -1,10 +1,10 @@
 package org.concordion.cubano.driver.ui;
 
+import org.concordion.cubano.AppConfig;
 import org.concordion.cubano.driver.BrowserBasedTest;
 import org.concordion.cubano.driver.web.BasePageObject;
 import org.concordion.cubano.driver.web.PageReadyConditions;
 import org.concordion.cubano.driver.web.config.WebDriverConfig;
-import org.concordion.cubano.utils.ActionTimer;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
 /**
@@ -16,7 +16,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
  */
 public abstract class PageObject<T extends PageObject<T>> extends BasePageObject<T> {
     public PageObject(BrowserBasedTest test) {
-        this(test, WebDriverConfig.getInstance().getDefaultTimeout());
+        this(test, AppConfig.getInstance().getDefaultTimeout());
     }
 
     public PageObject(BrowserBasedTest test, int timeoutWaitInSeconds, Object... params) {
