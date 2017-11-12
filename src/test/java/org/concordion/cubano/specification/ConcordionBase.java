@@ -13,6 +13,8 @@ import org.concordion.api.extension.Extensions;
 import org.concordion.api.option.ConcordionOptions;
 import org.concordion.api.option.MarkdownExtensions;
 import org.concordion.cubano.AppConfig;
+import org.concordion.cubano.config.Config;
+import org.concordion.cubano.config.ProxyConfig;
 import org.concordion.ext.StoryboardExtension;
 import org.concordion.ext.TimestampFormatterExtension;
 import org.concordion.integration.junit4.ConcordionRunner;
@@ -45,10 +47,10 @@ public abstract class ConcordionBase implements BrowserBasedTest {
     private final EnvironmentExtension footer = new EnvironmentExtension()
             .withRerunTest("01 - ProcessAndRules-RunSelectedTest")
             .withRerunParameter("token", "ALLOW")
-            .withRerunParameter("environment", AppConfig.getInstance().getEnvironment())
+            .withRerunParameter("environment", Config.getInstance().getEnvironment())
             .withRerunParameter("TEST_CLASSNAME", this.getClass().getName().replace(ConcordionBase.class.getPackage().getName() + ".", ""))
             .withRerunParameter("SVN_TAG", EnvironmentExtension.getSubversionUrl())
-            .withEnvironment(AppConfig.getInstance().getEnvironment().toUpperCase())
+            .withEnvironment(Config.getInstance().getEnvironment().toUpperCase())
             .withURL(AppConfig.getInstance().getBaseUrl());
 
 // Attempt 1: 
@@ -62,6 +64,7 @@ public abstract class ConcordionBase implements BrowserBasedTest {
 
     static {
         LogbackAdaptor.logInternalStatus();
+        ProxyConfig proxyConfig = Config.getInstance().getProxyConfig();
         AppConfig config = AppConfig.getInstance();
         config.logSettings();
 
@@ -71,13 +74,13 @@ public abstract class ConcordionBase implements BrowserBasedTest {
             .trustAllCertificates()
             .baseUrl(config.getBaseUrl());
 
-        if (config.isProxyRequired()) {
+        if (proxyConfig.isProxyRequired()) {
             HttpEasy.withDefaults()
-                    .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(config.getProxyHost(), config.getProxyPort())))
+                    .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyConfig.getProxyHost(), proxyConfig.getProxyPort())))
                     .bypassProxyForLocalAddresses(true);
 
-            if (!config.getProxyUser().isEmpty() && !config.getProxyPassword().isEmpty()) {
-                HttpEasy.withDefaults().proxyAuth(config.getProxyUser(), config.getProxyPassword());
+            if (!proxyConfig.getProxyUsername().isEmpty() && !proxyConfig.getProxyPassword().isEmpty()) {
+                HttpEasy.withDefaults().proxyAuth(proxyConfig.getProxyUsername(), proxyConfig.getProxyPassword());
             }
         }
     }
