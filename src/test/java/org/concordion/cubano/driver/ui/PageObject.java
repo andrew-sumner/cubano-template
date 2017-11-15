@@ -2,9 +2,9 @@ package org.concordion.cubano.driver.ui;
 
 import org.concordion.cubano.AppConfig;
 import org.concordion.cubano.driver.BrowserBasedTest;
+import org.concordion.cubano.driver.action.ActionTimer;
 import org.concordion.cubano.driver.web.BasePageObject;
 import org.concordion.cubano.driver.web.PageReadyConditions;
-import org.concordion.cubano.driver.web.config.WebDriverConfig;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
 /**
