@@ -11,10 +11,10 @@ import org.concordion.api.FailFast;
 import org.concordion.api.Scope;
 import org.concordion.api.ScopedObjectHolder;
 import org.concordion.api.extension.Extension;
+import org.concordion.cubano.data.DataCleanupHelper;
+import org.concordion.cubano.driver.concordion.ExceptionHtmlCaptureExtension;
 import org.concordion.ext.LogbackLogMessenger;
-import org.concordion.ext.LoggingFormatterExtension;
 import org.concordion.ext.LoggingTooltipExtension;
-import org.concordion.ext.StoryboardLogListener;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.concordion.slf4j.ext.ReportLogger;
 import org.concordion.slf4j.ext.ReportLoggerFactory;
@@ -24,8 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Level;
-import org.concordion.cubano.driver.concordion.ExceptionHtmlCaptureExtension;
-import org.concordion.cubano.data.DataCleanupHelper;
 
 /**
  * Customises the test specification and provides some helper methods
@@ -40,10 +38,6 @@ public abstract class ConcordionFixture extends ConcordionBase {
 
 	@Extension private final LoggingTooltipExtension tooltipExtension = new LoggingTooltipExtension(new LogbackLogMessenger(tooltipLogger.getName(), Level.ALL, true, "%msg%n"));
 	@Extension private final ExceptionHtmlCaptureExtension htmlCapture = new ExceptionHtmlCaptureExtension(getStoryboard(), getBrowser());
-
-	@Extension
-	private final LoggingFormatterExtension loggerExtension = new LoggingFormatterExtension()
-			.registerListener(new StoryboardLogListener(getStoryboard()));
 
 	@ConcordionScoped(Scope.SPECIFICATION)
 	private ScopedObjectHolder<DataCleanupHelper> dataHolder = new ScopedObjectHolder<DataCleanupHelper>() {
