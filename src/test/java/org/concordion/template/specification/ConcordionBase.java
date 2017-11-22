@@ -6,8 +6,6 @@ import org.concordion.api.extension.Extensions;
 import org.concordion.cubano.config.Config;
 import org.concordion.cubano.config.ProxyConfig;
 import org.concordion.cubano.driver.concordion.EnvironmentExtension;
-import org.concordion.ext.LoggingFormatterExtension;
-import org.concordion.ext.StoryboardLogListener;
 import org.concordion.ext.TimestampFormatterExtension;
 import org.concordion.ext.runtotals.RunTotalsExtension;
 import org.concordion.template.AppConfig;
@@ -21,11 +19,6 @@ import org.concordion.template.AppConfig;
 @ConcordionResources("/customConcordion.css")
 @Extensions({ TimestampFormatterExtension.class, RunTotalsExtension.class })
 public abstract class ConcordionBase extends org.concordion.cubano.framework.ConcordionBase {
-
-    // TODO Is the position of this causing the logging of the final screenshot to come to late in HelloWorldFixture?
-    @Extension
-    private final LoggingFormatterExtension loggerExtension = new LoggingFormatterExtension()
-            .registerListener(new StoryboardLogListener(getStoryboard()));
 
     @Extension
     private final EnvironmentExtension footer = new EnvironmentExtension()
