@@ -14,3 +14,4 @@ bin/
 *.iml
 classes/
 
+/user.properties

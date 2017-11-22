@@ -1,3 +1,3 @@
 # Service Request
 
-* [REST Request](RestRequest.md "c:run")
+* [REST Request](RestRequest.html "c:run")

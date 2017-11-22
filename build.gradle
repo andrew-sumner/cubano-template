@@ -12,7 +12,10 @@ repositories {
 
 dependencies {
 	// This uses Jitpack to build and import multiple modules from Github
-	testCompile 'com.github.concordion:cubano:cubano-0.1.4'
+	testCompile 'com.github.concordion:cubano:firefoxFrames-SNAPSHOT'
+	// testCompile 'com.github.concordion:cubano:master-SNAPSHOT'
+	// testCompile 'com.github.concordion:cubano:cubano-0.1.4'
+    
 	
 	testCompile 'org.codejargon:fluentjdbc:1.6'
 

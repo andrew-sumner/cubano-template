@@ -1,3 +1,10 @@
 #environment = dev
 
-webdriver.firefox.activatePlugins = true
+#webdriver.browserprovider = ChromeBrowserProvider
+#webdriver.browserprovider = EdgeBrowserProvider
+#webdriver.browserprovider = FirefoxBrowserProvider
+#webdriver.browserprovider = InternetExplorerBrowserProvider
+#webdriver.browserprovider = OperaBrowserProvider
+#webdriver.browserprovider = SafariBrowserProvider
+
+#wdm.targetPath=D:\Java\m2_repository
