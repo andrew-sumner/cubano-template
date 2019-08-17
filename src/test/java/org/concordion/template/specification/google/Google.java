@@ -1,7 +1,7 @@
 package org.concordion.template.specification.google;
 
-import org.concordion.template.specification.ConcordionIndex;
+import org.concordion.template.framework.CubanoTemplateIndex;
 
-public class Google extends ConcordionIndex {
+public class Google extends CubanoTemplateIndex {
 
 }

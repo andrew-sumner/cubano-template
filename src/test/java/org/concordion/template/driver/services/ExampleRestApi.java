@@ -9,10 +9,8 @@ public class ExampleRestApi extends ServiceBase {
 	// Using a public API found at https://resttesttest.com/
 	public String getIPAddress() throws IOException {
 		// NOTE: Base URL has already been set in ConcordionBase using baseUrl from config.properties file
-
 		String response = HttpEasy.request()
-                // TODO This is failing with HTTPS, why? When fixed remove this line.
-                .baseURI("http://httpbin.org")
+                // .baseUrl("http://httpbin.org")
                 .path("get")
 				.queryParam("name", "fred")
 				.get()

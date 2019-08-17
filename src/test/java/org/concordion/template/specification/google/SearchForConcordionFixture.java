@@ -1,10 +1,10 @@
 package org.concordion.template.specification.google;
 
-import org.concordion.template.specification.ConcordionFixture;
+import org.concordion.template.framework.CubanoTemplateFixture;
 
-public class SearchForConcordionFixture extends ConcordionFixture {
+public class SearchForConcordionFixture extends CubanoTemplateFixture {
 
-	public String google(String term, String site) {
+    public String google(String term, String site) {
 		return workflow()
 				.openSearch()
 				.searchFor(term)

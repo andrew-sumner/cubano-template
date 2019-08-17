@@ -9,7 +9,7 @@ public class SearchResult extends HtmlElement {
 	@FindBy(className = "r")
 	WebElement heading;
 
-	@FindBy(css = ".s ._Rm")
+    @FindBy(tagName = "cite")
 	WebElement url;
 
 	@FindBy(css = ".s .st")
